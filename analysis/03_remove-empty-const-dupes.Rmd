@@ -47,6 +47,8 @@ d %>%
 
 ```
 
+## Remove empty or constant rows/columns
+
 And now let's remove them:
 
 ```{r remove the constant columns}
@@ -58,6 +60,9 @@ d %>%
 
 
 ```
+
+## Identify duplicates
+
 
 To identify the duplicates in the date we use `get_dupes()`.  This only filters the date.  It does not remove it.  
 
