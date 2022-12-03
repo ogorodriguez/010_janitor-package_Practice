@@ -1,7 +1,7 @@
-name: "janitor R Package: Learning"
+name: "010_janitor-package_Practice"
 output_dir: ../docs
 navbar:
-  title: "010_janitor-package_Practice"
+  title: "janitor R Package: Learning"
   left:
   - text: Home
     href: index.html
