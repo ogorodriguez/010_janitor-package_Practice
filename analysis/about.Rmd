@@ -7,4 +7,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-Describe your project.
+This practice will be the `janitor()` package.
+
+Annotations will follow the instructions found on the site [yzuaR-Blog] (<https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/>) by [Yuri Zablotski](https://yuzar-blog.netlify.app/about.html)
+
+Zablotski (2021, Jan. 2). yuzaR-Blog: R package reviews {janitor} clean your data!. Retrieved from <https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/>
+
+The `janitor` package was created by Sam Firke.
+
+> ```{r}
+> citation("janitor")
+> ```

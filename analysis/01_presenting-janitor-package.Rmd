@@ -1,0 +1,124 @@
+---
+title: "Presenting the {janitor} R package"
+author: "LJ"
+date: "2022-12-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE,
+                      autodep = TRUE,
+                      cache.lazy = FALSE,
+                      message = FALSE, 
+                      dpi = 180,
+                      fig.width = 8, 
+                      fig.height = 5)
+
+pacman::p_load(tidyverse,
+               janitor,
+               here,
+               readxl,
+               kableExtra)
+
+ggplot2::theme_set(theme_minimal())
+
+```
+
+## Introduction
+
+The `janitor` package was created by [Sam Firke](https://samfirke.com/about/)
+
+Its purpose was to make data nomalising as quick and swift as possible, since data cleaning 
+is one of the most time consuming activities during data analysis and work.  
+
+This post will go over the `janitor` packages most characteristic functionalities. 
+
+A disclaimer: I had used the package lots of times before, specifically the `clean_names()`
+ function.  I will now try to learn of some other ones. 
+ 
+## A messy data example
+
+Data collected or found online is not always normalised, or say, clean.  Data coming 
+from excel files must be treated before it is useful for work with programs such as R, or 
+Python.  
+
+Some indicators of messyness are:
+
+- strange column or variable names
+- empty rows or columns
+- consutant number columns
+- strange or different date formats
+
+Here there's an example of a messy data set found in the `janitor` github page.  
+It's an excel file with data on fictional teachers HR information.
+
+```{r messy data example with kable()}
+## This data is visualized using the kable() package
+dirty_data <- readxl::read_excel(here::here("data", "dirty_data.xlsx"), skip = 1) # First row containsa an informative cell
+
+dirty_data %>% 
+  kbl() %>% 
+  kable_classic_2(full_width = FALSE)
+
+```
+
+In the previous view the `kable()` visualization shows us all the data and we can see 
+alraedy some of its irregularities:  title rows appear as data rows, the empty columns and rows, etc.
+
+If we view it as a tibble(), we can see also what would make the analysis difficult, and 
+the normalization a necessity.  
+
+
+```{r messy data examples with just tibble()}
+dirty_data <- readxl::read_excel(here::here("data", "dirty_data.xlsx"), skip = 1)
+
+dirty_data
+
+```
+
+## Back to Home
+
+[Home](index.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

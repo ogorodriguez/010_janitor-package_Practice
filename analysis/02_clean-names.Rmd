@@ -1,0 +1,71 @@
+---
+title: "Cleaning titles with clean_names()"
+author: "LJ"
+date: "2022-12-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE,
+                      autodep = TRUE,
+                      cache.lazy = FALSE,
+                      message = FALSE, 
+                      dpi = 180,
+                      fig.width = 8, 
+                      fig.height = 5)
+
+pacman::p_load(tidyverse,
+               janitor,
+               here,
+               readxl,
+               kableExtra)
+
+ggplot2::theme_set(theme_minimal())
+
+```
+
+## Introduction
+
+In the previous session we loaded an example dataset with a lot of noise and 
+inconsistencies which we will use in the following:
+
+```{r load messy data example as tibble}
+dirty_data <- readxl::read_excel(here::here("data", "dirty_data.xlsx"), skip = 1) # First row containsa an informative cell
+
+dirty_data
+
+```
+
+## Using `clean_names()`
+
+`clean_names()` is used to normalize column names so they follow the same format. 
+Unnecessary spaces are removed, all letters become lowercase, and underscores are used
+to concatenate and get one single word as a variable.  It also makes the column names readable.
+
+```{r using clean_names()}
+d <- dirty_data %>% 
+  clean_names()
+
+d
+
+```
+
+
+```{r}
+d %>% 
+  glimpse()
+```
+
+
+As we can see, the resulting table uses the first line to create the titles.  Interestingly, 
+the real titles are actually found on the second row of values.
+
+Also, duplicate columns get labelled with a number suffix for better differentiation.
+
+
+
+
+## Back to Home
+
+[Home](index.html)

@@ -1,0 +1,105 @@
+---
+title: "Removing constants and empty row/columns and duplicates"
+author: "LJ"
+date: "2022-12-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE,
+                      autodep = TRUE,
+                      cache.lazy = FALSE,
+                      message = FALSE, 
+                      dpi = 180,
+                      fig.width = 8, 
+                      fig.height = 5)
+
+pacman::p_load(tidyverse,
+               janitor,
+               here,
+               readxl,
+               kableExtra)
+
+ggplot2::theme_set(theme_minimal())
+
+```
+
+## Introduction
+
+In this section we will use the functions to remove constant or empty rows or columns, that 
+do not offer any extra informaton, and identify duplicate data in the rows.
+
+```{r add constant columns}
+## We will add two constant columns in the dataset d
+d <- readxl::read_excel(here::here("data", "dirty_data.xlsx"), skip = 1) %>% 
+  clean_names()
+
+d <- d %>% 
+  mutate(const_col_01 = 45,
+         const_col_02 = "text") %>% 
+  relocate(starts_with("const"), .after = last_name)
+ 
+
+d %>%
+   kbl() %>% 
+  kable_classic_2(full_width = FALSE)
+
+```
+
+And now let's remove them:
+
+```{r remove the constant columns}
+d %>% 
+  janitor::remove_constant() %>% 
+  janitor::remove_empty() %>% 
+  kbl() %>% 
+  kable_classic_2(full_width = FALSE)
+
+
+```
+
+To identify the duplicates in the date we use `get_dupes()`.  This only filters the date.  It does not remove it.  
+
+```{r identify duplicates}
+
+d %>% 
+  get_dupes(first_name) %>% 
+  kbl() %>%
+  kable_classic_2(full_width = F)
+
+
+```
+
+
+
+
+
+## Back to Home
+
+[Home](index.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

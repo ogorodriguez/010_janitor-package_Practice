@@ -8,4 +8,15 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+This practice will be the `janitor()` package, as indicated in the blog [yuzaR-Blog](https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/)
+
+**Content**
+
+-   [`janitor`Presentation](01_presenting-janitor-package.html)
+-   [Cleaning names of columns](02_clean-names.html) 
+-   [Removing empty or constant rows and columns and duplicates](03_remove-empty-const-dupes.html)
+-   Converting to dates
+-   Identifying title rows
+-   Making frequency tables
+
+
