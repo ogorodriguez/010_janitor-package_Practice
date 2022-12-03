@@ -1,4 +1,4 @@
-name: "janito R Package: Learning"
+name: "janitor R Package: Learning"
 output_dir: ../docs
 navbar:
   title: "010_janitor-package_Practice"
