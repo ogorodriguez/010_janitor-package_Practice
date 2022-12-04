@@ -3,6 +3,9 @@ title: "Making frequency tables with `tabyl()`"
 author: "LJ"
 date: "2022-12-04"
 output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -27,24 +30,257 @@ ggplot2::theme_set(theme_minimal())
 
 ## Introduction
 
-Whenever a data analysts gets the data to work with, they will need to do a lot of counting 
-as a first interaction with it, to understand it and interpret it.
+Whenever a data analysts gets the data to work with, they will need to
+do a lot of counting as a first interaction with it, to understand it
+and interpret it.
 
-![The Data Science Lifecycle](here::here("docs","assets","data-science-explore.png"))
+![The Data Science
+Lifecycle](here::here(%22docs%22,%22assets%22,%22data-science-explore.png%22))
 
-It is an important of the exploratory stage in data analysis.  This is where we create early 
-graphs (histograms, bar charts, etc.), create summaries and the like, to make sense of the date or 
-create early hypothesis from it.
+It is an important of the exploratory stage in data analysis. This is
+where we create early graphs (histograms, bar charts, etc.), create
+summaries and the like, to make sense of the date or create early
+hypothesis from it.
 
-One of the quick ways to see distribution of the data is using frequency tables.  
-Base R has the `table()` function for that.  `janitor` using `tabyl()`, makes this job 
-way more visual and representative.  
+One of the quick ways to see distribution of the data is using frequency
+tables.\
+Base R has the `table()` function for that; however, it has lots of
+drawbacks (not outputting data frames, not easy to format, it doesn't
+accept tidy inputs). `janitor` using `tabyl()`, makes this job way more
+visual and representative.
+
+## `tabyl()` vignette
+
+For this practice I will use the [`tabyl()`
+vignette](https://sfirke.github.io/janitor/articles/tabyls.html#motivation-why-tabyl)
+created by Sam Firke, the author of the R package. I find it quite
+thorough compared to the blog used in the other sections.
+
+As it starts, the vignette already points to the fact mentioned above
+that "data science is mostly counting things."
+
+`tabyl()` is aligned with tidy philosophy, and incorporates functions
+that can be used in other formats that are non-tabyl such as tibbles and
+data frames. Here, I am referring to the `adorn(_)` family of functions.
+
+`tabyl()` can work with either 1, 2, or 3 input variables (columns) from
+a data frame. The next points will go over these ways.
+
+## One-way tabyl
+
+`tabyl()` with one input column will work similarly as Base-R table but
+with tidy benefits. Let's use the starwars R package to get a summary of
+eye-color from all the human characters.
+
+```{r tabyl with one input column examples: starwars humans}
+## Load the starwars package
+humans <- dplyr::starwars %>% 
+  filter(species == "Human")
+
+humans %>% 
+  slice_head(n = 6)
 
 
+```
+
+```{r tabyl with one input column examples: starwars freq eye color}
+t_01 <- humans %>% 
+  tabyl(eye_color)
+
+t_01 %>%    # convert as tibble for better visualiztion
+  as_tibble()
+
+
+```
+
+This is similar to doing a count in dplyr, with the added percentage
+column in decimals.
+
+If there were NA values, `tabyl()` will show "valid" percentages columns
+since it will remove the NAs.
+
+```{r case with NAs}
+x <- c("big", "big", "small", "small", "small", NA)
+tabyl(x) %>% 
+  as_tibble()
+
+```
+
+In the previous example, the input was a vector. As the result is a
+tabyl object then it is easy to convert it into workable tidy formats.
+
+The `adorn_()` helper functions may be more suitable for 2-column
+inputs; however, they offer more visual info when used in cases like the
+ones above.
+
+One these functions is `adorn_pct_formatting()` which adds the % symbol
+and roudning to decimal percent columns. `adorn_totals()` adds a total
+row if included as argument.
+
+```{r using adorn_pct_formatting and adorn_totals in one-column inputs}
+t_01 %>% 
+  adorn_totals("row") %>% 
+  adorn_pct_formatting() %>% 
+  as_tibble()
+
+
+```
+
+## Two-way tabyl
+
+Frequency tables that include two-column inputs are called crosstab or
+contingency tables. Their result is the combination of a dplyr count and
+pivot wider.
+
+```{r 2-column input tabyl example}
+## Let's create a contingency table of male/femail starwars characters based on eye color
+t_02 <- humans %>% 
+  tabyl(gender,
+        eye_color) %>% 
+  as_tibble()
+
+t_02
+
+
+```
+
+Now let's the percentages by row (contingency tabyls do not output
+percentages). Also we will add the corresponding formatting.
+
+```{r adding percents and formatting to 2-column inputs}
+t_02 %>% 
+  adorn_percentages("row") %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns(position = "front") %>%  # Adds the numbers next to the percentages in parenthesis.  Default position is "rear"
+  as_tibble()
+
+
+```
+
+## Three-way tabyls
+
+When adding three input columns, `tabyl()` will produce a list of
+tabyls.
+
+In this example we will have the gender show the corresponding
+distribution within eye_color, and skin_color in the starwars dataset.
+
+```{r 3-column input example}
+t_03 <- humans %>% 
+  tabyl(eye_color,
+        skin_color,
+        gender)
+
+t_03
+
+```
+
+If we want to add `adorn_()` functions to a list of tabyls (or data
+frames), the `tabyl()` package will call `purrr_map()` silently to apply
+it to each individual element of the list.
+
+```{r}
+## Adding adorn_() function to include total rows, percentages, etc.
+humans %>% 
+  tabyl(eye_color, skin_color, gender, show_missing_levels = FALSE) %>% 
+  adorn_totals("row") %>% 
+  adorn_percentages("all") %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns(position = "front") %>% 
+  adorn_title()
+
+```
+
+## More on the `adorn_()` functionalities
+
+`adorn_()` will approximate Pivot Table functionalities of Excel on data
+frames. Also, they print elegrant results for interactive analysis or
+for report sharing.
+
+```{r using adorn_() functionalities for elegant printing}
+humans %>% 
+  tabyl(gender, eye_color) %>% 
+  adorn_totals(c("row", "col")) %>% 
+  adorn_percentages("row") %>% 
+  adorn_pct_formatting(rounding = "half up", digits = 0) %>% 
+  adorn_ns(position = "front") %>% 
+  adorn_title("combined") %>% 
+  knitr::kable()
+
+
+```
+
+The `adorn_()` functions are...
+
+  a. `adorn_totals()`: Adds totals to row, column or both
+  b. `adorn_percentaage()`: Calculates percentages on either rows or columns 
+  c. `adorn_pct_formatting()` Format percentage columns, controlling number of digits, 
+  and appends the % symbol
+  d. `adorn_rounding()`: Round numbers, recommended use of the half_up argument when 
+  the decimals land on a .5 (ties situation).  This function should not be used together 
+  with `adorn_pct_formatting()`.
+  e. `adorn_ns()`: Adds the numbers the percentages represent coming for the underlying 
+  counts in the tabyl.  Interesting to see how they can be applied by the user.
+  f. `adorn_title()`: Add a title to a tabyl, or a title to a new row on top of the dataframe 
+  or a combination of row and column title.
+  
+  These functions should be applied in this order.  
+  
+  
+## `adorn_()` functions with other types of data frames
+
+`adorn_()` functions work with other data frames, not only the results when using 
+`tabyl()`. 
+
+For example, using the mtcars dataset, we can create a column of totals and get 
+the percentages from them.
+
+```{r using mtcars with tabyl()}
+mtcars %>% 
+  rownames_to_column(var = "cars") %>% 
+  as_tibble() %>% 
+  adorn_totals("col") %>% 
+  adorn_percentages("col") %>% 
+  adorn_rounding(digits = 2) %>% 
+  slice_head(n = 6)
+
+```
+
+```{r example using adorn_() with results from summarise}
+percent_above_165_cm <- humans %>%
+  group_by(gender) %>%
+  summarise(pct_above_165_cm = mean(height > 165, na.rm = TRUE), .groups = "drop")
+
+percent_above_165_cm %>%
+  adorn_pct_formatting() 
+
+## As a follow up, it would be good to see how to add Ns (numbers) to the results below.  
+
+```
 
 ## Back to Home
 
 [Home](index.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
