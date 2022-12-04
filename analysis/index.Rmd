@@ -13,10 +13,10 @@ This practice will be the `janitor()` package, as indicated in the blog [yuzaR-B
 **Content**
 
 -   [`janitor`Presentation](01_presenting-janitor-package.html)
--   [Cleaning names of columns](02_clean-names.html) 
+-   [Cleaning names of columns with `clean_names()`](02_clean-names.html) 
 -   [Removing empty or constant rows and columns and duplicates](03_remove-empty-const-dupes.html)
--   Converting to dates
--   Identifying title rows
--   Making frequency tables
+-   [Converting to dates with `convert_to_dates()`](04_converting-dates.html)
+-   [Identifying title rows with `row_to_names()`](05_identify-title-rows.html)
+-   [Making frequency tables with `tabyl()`](06_frequency-tabyls.html)
 
 

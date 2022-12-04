@@ -1,0 +1,88 @@
+---
+title: "Converting dates"
+author: "LJ"
+date: "2022-12-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE,
+                      autodep = TRUE,
+                      cache.lazy = FALSE,
+                      message = FALSE, 
+                      dpi = 180,
+                      fig.width = 8, 
+                      fig.height = 5)
+
+pacman::p_load(tidyverse,
+               janitor,
+               here,
+               readxl,
+               kableExtra)
+
+ggplot2::theme_set(theme_minimal())
+
+```
+
+## Introduction
+
+Wnen importing data that contains date values, these may come in different formats.
+If the import is from excel, these values will not be formatted as dates but as 
+numbers.  Excel treats dates as whole numbers starting from 00001 for 1900.
+
+In our dirty_data sample the date column, hire_date has the following values:
+
+```{r show the date column in dirty_data set}
+dirty_data <- readxl::read_excel(here::here("data", "dirty_data.xlsx"), skip = 1) %>%   # First row containsa an informative cell
+  clean_names()
+
+dirty_data %>% 
+  select(hire_date) %>% 
+  slice_head(n = 6)
+
+```
+
+## `convert_to_date()`
+
+`janitor` has the `convert_to_date()` function that does the conversion for us.  
+What is nice is that it formats the date following the ISO-8601 standard: yyyy-mm-dd
+
+
+```{r using `convert_to_date()`}
+dirty_data %>% 
+  select(hire_date) %>% 
+  mutate(hire_date = convert_to_date(hire_date))
+
+
+```
+
+
+## Back to Home
+
+[Home](index.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

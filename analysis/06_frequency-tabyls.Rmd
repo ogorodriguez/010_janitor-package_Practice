@@ -1,0 +1,72 @@
+---
+title: "Making frequency tables with `tabyl()`"
+author: "LJ"
+date: "2022-12-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE,
+                      autodep = TRUE,
+                      cache.lazy = FALSE,
+                      message = FALSE, 
+                      dpi = 180,
+                      fig.width = 8, 
+                      fig.height = 5)
+
+pacman::p_load(tidyverse,
+               janitor,
+               here,
+               readxl,
+               kableExtra)
+
+ggplot2::theme_set(theme_minimal())
+
+```
+
+## Introduction
+
+Whenever a data analysts gets the data to work with, they will need to do a lot of counting 
+as a first interaction with it, to understand it and interpret it.
+
+![The Data Science Lifecycle](here::here("docs","assets","data-science-explore.png"))
+
+It is an important of the exploratory stage in data analysis.  This is where we create early 
+graphs (histograms, bar charts, etc.), create summaries and the like, to make sense of the date or 
+create early hypothesis from it.
+
+One of the quick ways to see distribution of the data is using frequency tables.  
+Base R has the `table()` function for that.  `janitor` using `tabyl()`, makes this job 
+way more visual and representative.  
+
+
+
+## Back to Home
+
+[Home](index.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
