@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="LJ" />
 
+<meta name="date" content="2022-12-04" />
 
-<title>About</title>
+<title>Identifying title rows</title>
 
 <script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +31,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -231,6 +236,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -238,6 +306,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -281,7 +359,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About</h1>
+<h1 class="title toc-ignore">Identifying title rows</h1>
+<h4 class="author">LJ</h4>
+<h4 class="date">2022-12-04</h4>
 
 </div>
 
@@ -289,7 +369,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -300,8 +380,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -314,9 +394,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong>
@@ -352,6 +432,104 @@ class="panel-collapse collapse">
 <p>Great! Since the R Markdown file has been committed to the Git
 repository, you know the exact version of the code that produced these
 results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20221203code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20221203)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20221203code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20221203)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+</p>
+</div>
+<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div class="panel-body">
+The following chunks had caches available:
+<ul>
+<li>
+create dummy set x
+</li>
+<li>
+session-info-chunk-inserted-by-workflowr
+</li>
+<li>
+using row_to_names
+</li>
+</ul>
+<p>To ensure reproducibility of the results, delete the cache directory
+<code>05_identify-title-rows_cache</code> and re-run the analysis. To
+have workflowr automatically delete the cache directory prior to
+building the file, set <code>delete_cache = TRUE</code> when running
+<code>wflow_build()</code> or <code>wflow_publish()</code>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -419,10 +597,12 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/about.Rmd</code>) and HTML
-(<code>docs/about.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+made to the R Markdown
+(<code>analysis/05_identify-title-rows.Rmd</code>) and HTML
+(<code>docs/05_identify-title-rows.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -448,104 +628,19 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ogorodriguez/010_janitor-package_Practice/7283fbb7eb53cb1bbb9afa6af2d5db34df3c033c/docs/about.html" target="_blank">7283fbb</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2022-12-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/blob/fac5016b5f1e24ef8b6a84607ca53999e00c6b39/analysis/about.Rmd" target="_blank">fac5016</a>
+<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/blob/01fa7a8849d268ea579fcde4c1e01e84650b8cd5/analysis/05_identify-title-rows.Rmd" target="_blank">01fa7a8</a>
 </td>
 <td>
 ogorodriguez
 </td>
 <td>
-2022-12-03
+2022-12-04
 </td>
 <td>
-Added sections on clean_names and removing empty constant and
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ogorodriguez/010_janitor-package_Practice/8844528fa9c8ce49143f3f353debd4f7e80589b1/docs/about.html" target="_blank">8844528</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2022-12-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ogorodriguez/010_janitor-package_Practice/fb8a87a48ee5e8ee49305e146b2147a7c91df8ce/docs/about.html" target="_blank">fb8a87a</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2022-12-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ogorodriguez/010_janitor-package_Practice/03cae0964224ef0818b26ad03a0d4cf636848de7/docs/about.html" target="_blank">03cae09</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2022-12-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/blob/6ff3c879bbba64c6e35b42a87e932f48f49a0a88/analysis/about.Rmd" target="_blank">6ff3c87</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2022-12-03
-</td>
-<td>
-Start workflowr project.
+Added sections 04-06 to the practice
 </td>
 </tr>
 </tbody>
@@ -555,37 +650,108 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>This practice will be the <code>janitor()</code> package.</p>
-<p>Annotations will follow the instructions found on the site
-[yzuaR-Blog] (<a
-href="https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/"
-class="uri">https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/</a>)
-by <a href="https://yuzar-blog.netlify.app/about.html">Yuri
-Zablotski</a></p>
-<p>Zablotski (2021, Jan. 2). yuzaR-Blog: R package reviews {janitor}
-clean your data!. Retrieved from <a
-href="https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/"
-class="uri">https://yuzar-blog.netlify.app/posts/2021-01-02-r-package-reviews-janitor-clean-your-data/</a></p>
-<p>The <code>janitor</code> package was created by Sam Firke.</p>
-<blockquote>
-<pre class="r"><code>citation(&quot;janitor&quot;)</code></pre>
-<pre><code>
-To cite package &#39;janitor&#39; in publications use:
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>It seems that the janitor package does a lot to keep spreadsheets
+ready for data analysis using R.</p>
+<p>It is common in the spreadhseet world to include information in the
+first 5 rows of a sheet.<br />
+Though it serves the purpose of communicating to the reader and putting
+them in context, it does not do any favors for the data analyst.</p>
+<p>Identifying such rows and eliminating from our tables is another
+cleaning task that can be performed by <code>janitor</code> using the
+<code>row_to_names()</code> function.</p>
+</div>
+<div id="row_to_names" class="section level2">
+<h2><code>row_to_names()</code></h2>
+<pre class="r"><code>## Make a dummy dataset
+x &lt;- tibble(
+  x_01 = c(&quot;some general description&quot;, &quot;Real title&quot;, 1:3),
+  x_02 = c(&quot;important informatin here&quot;, &quot;Another title&quot;, 4:6)
+)
 
-  Firke S (2021). _janitor: Simple Tools for Examining and Cleaning
-  Dirty Data_. R package version 2.1.0,
-  &lt;https://CRAN.R-project.org/package=janitor&gt;.
+x</code></pre>
+<pre><code># A tibble: 5 × 2
+  x_01                     x_02                     
+  &lt;chr&gt;                    &lt;chr&gt;                    
+1 some general description important informatin here
+2 Real title               Another title            
+3 1                        4                        
+4 2                        5                        
+5 3                        6                        </code></pre>
+<p>In the dummy dataset, x, the real titles are found in row 2. Passing
+an argument indicating the row will eliminate the redundant ones.</p>
+<pre class="r"><code>x %&gt;% 
+  janitor::row_to_names(row_number = 2) %&gt;% 
+  clean_names()</code></pre>
+<pre><code># A tibble: 3 × 2
+  real_title another_title
+  &lt;chr&gt;      &lt;chr&gt;        
+1 1          4            
+2 2          5            
+3 3          6            </code></pre>
+</div>
+<div id="back-to-home" class="section level2">
+<h2>Back to Home</h2>
+<p><a href="index.html">Home</a></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.1 (2022-06-23 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19045)
 
-A BibTeX entry for LaTeX users is
+Matrix products: default
 
-  @Manual{,
-    title = {janitor: Simple Tools for Examining and Cleaning Dirty Data},
-    author = {Sam Firke},
-    year = {2021},
-    note = {R package version 2.1.0},
-    url = {https://CRAN.R-project.org/package=janitor},
-  }</code></pre>
-</blockquote>
+locale:
+[1] LC_COLLATE=Spanish_Spain.utf8  LC_CTYPE=Spanish_Spain.utf8   
+[3] LC_MONETARY=Spanish_Spain.utf8 LC_NUMERIC=C                  
+[5] LC_TIME=Spanish_Spain.utf8    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] kableExtra_1.3.4 readxl_1.4.1     here_1.0.1       janitor_2.1.0   
+ [5] forcats_0.5.2    stringr_1.5.0    dplyr_1.0.10     purrr_0.3.4     
+ [9] readr_2.1.2      tidyr_1.2.0      tibble_3.1.8     ggplot2_3.3.6   
+[13] tidyverse_1.3.2  workflowr_1.7.0 
+
+loaded via a namespace (and not attached):
+ [1] httr_1.4.4          sass_0.4.4          viridisLite_0.4.1  
+ [4] jsonlite_1.8.3      modelr_0.1.9        bslib_0.4.1        
+ [7] assertthat_0.2.1    getPass_0.2-2       googlesheets4_1.0.1
+[10] cellranger_1.1.0    yaml_2.3.5          pillar_1.8.1       
+[13] backports_1.4.1     glue_1.6.2          digest_0.6.29      
+[16] promises_1.2.0.1    rvest_1.0.3         snakecase_0.11.0   
+[19] colorspace_2.0-3    htmltools_0.5.3     httpuv_1.6.5       
+[22] pkgconfig_2.0.3     broom_1.0.1         haven_2.5.1        
+[25] webshot_0.5.4       scales_1.2.1        svglite_2.1.0      
+[28] processx_3.7.0      whisker_0.4         later_1.3.0        
+[31] tzdb_0.3.0          timechange_0.1.1    git2r_0.30.1       
+[34] googledrive_2.0.0   generics_0.1.3      ellipsis_0.3.2     
+[37] cachem_1.0.6        pacman_0.5.1        withr_2.5.0        
+[40] cli_3.3.0           magrittr_2.0.3      crayon_1.5.2       
+[43] evaluate_0.18       ps_1.7.1            fs_1.5.2           
+[46] fansi_1.0.3         xml2_1.3.3          tools_4.2.1        
+[49] hms_1.1.2           gargle_1.2.0        lifecycle_1.0.3    
+[52] munsell_0.5.0       reprex_2.0.2        callr_3.7.2        
+[55] compiler_4.2.1      jquerylib_0.1.4     systemfonts_1.0.4  
+[58] rlang_1.0.6         grid_4.2.1          rstudioapi_0.14    
+[61] rmarkdown_2.18      codetools_0.2-18    gtable_0.3.1       
+[64] DBI_1.1.3           R6_2.5.1            lubridate_1.9.0    
+[67] knitr_1.41          fastmap_1.1.0       utf8_1.2.2         
+[70] rprojroot_2.0.3     stringi_1.7.8       Rcpp_1.0.9         
+[73] vctrs_0.5.1         dbplyr_2.2.1        tidyselect_1.2.0   
+[76] xfun_0.35          </code></pre>
+</div>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -603,6 +769,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -635,6 +803,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
