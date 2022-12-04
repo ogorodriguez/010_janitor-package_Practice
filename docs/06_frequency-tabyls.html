@@ -502,7 +502,37 @@ aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
 The following chunks had caches available:
 <ul>
 <li>
+2-column input tabyl example
+</li>
+<li>
+3-column input example
+</li>
+<li>
+adding percents and formatting to 2-column inputs
+</li>
+<li>
+case with NAs
+</li>
+<li>
+example using adorn_() with results from summarise
+</li>
+<li>
 session-info-chunk-inserted-by-workflowr
+</li>
+<li>
+unnamed-chunk-1
+</li>
+<li>
+unnamed-chunk-2
+</li>
+<li>
+using adorn_() functionalities for elegant printing
+</li>
+<li>
+using adorn_pct_formatting and adorn_totals in one-column inputs
+</li>
+<li>
+using mtcars with tabyl()
 </li>
 </ul>
 <p>To ensure reproducibility of the results, delete the cache directory
@@ -531,15 +561,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez010janitorpackagePracticetree5f4ee96e66942573798d30092c347b603f9e2c46targetblank5f4ee96a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez010janitorpackagePracticetree7bdc330779552c985e7a37538d76890b42874addtargetblank7bdc330a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/tree/5f4ee96e66942573798d30092c347b603f9e2c46" target="_blank">5f4ee96</a>
+<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/tree/7bdc330779552c985e7a37538d76890b42874add" target="_blank">7bdc330</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez010janitorpackagePracticetree5f4ee96e66942573798d30092c347b603f9e2c46targetblank5f4ee96a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez010janitorpackagePracticetree7bdc330779552c985e7a37538d76890b42874addtargetblank7bdc330a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -549,7 +579,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/tree/5f4ee96e66942573798d30092c347b603f9e2c46" target="_blank">5f4ee96</a>.
+<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/tree/7bdc330779552c985e7a37538d76890b42874add" target="_blank">7bdc330</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -622,6 +652,40 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ogorodriguez/010_janitor-package_Practice/blob/7bdc330779552c985e7a37538d76890b42874add/analysis/06_frequency-tabyls.Rmd" target="_blank">7bdc330</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2022-12-04
+</td>
+<td>
+Added section on tabyl()
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ogorodriguez/010_janitor-package_Practice/f0f0320e9e3599dadffc503cea1deecfa78165cc/docs/06_frequency-tabyls.html" target="_blank">f0f0320</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2022-12-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -678,9 +742,370 @@ summaries and the like, to make sense of the date or create early
 hypothesis from it.</p>
 <p>One of the quick ways to see distribution of the data is using
 frequency tables.<br />
-Base R has the <code>table()</code> function for that.
-<code>janitor</code> using <code>tabyl()</code>, makes this job way more
-visual and representative.</p>
+Base R has the <code>table()</code> function for that; however, it has
+lots of drawbacks (not outputting data frames, not easy to format, it
+doesn’t accept tidy inputs). <code>janitor</code> using
+<code>tabyl()</code>, makes this job way more visual and
+representative.</p>
+</div>
+<div id="tabyl-vignette" class="section level2">
+<h2><code>tabyl()</code> vignette</h2>
+<p>For this practice I will use the <a
+href="https://sfirke.github.io/janitor/articles/tabyls.html#motivation-why-tabyl"><code>tabyl()</code>
+vignette</a> created by Sam Firke, the author of the R package. I find
+it quite thorough compared to the blog used in the other sections.</p>
+<p>As it starts, the vignette already points to the fact mentioned above
+that “data science is mostly counting things.”</p>
+<p><code>tabyl()</code> is aligned with tidy philosophy, and
+incorporates functions that can be used in other formats that are
+non-tabyl such as tibbles and data frames. Here, I am referring to the
+<code>adorn(_)</code> family of functions.</p>
+<p><code>tabyl()</code> can work with either 1, 2, or 3 input variables
+(columns) from a data frame. The next points will go over these
+ways.</p>
+</div>
+<div id="one-way-tabyl" class="section level2">
+<h2>One-way tabyl</h2>
+<p><code>tabyl()</code> with one input column will work similarly as
+Base-R table but with tidy benefits. Let’s use the starwars R package to
+get a summary of eye-color from all the human characters.</p>
+<pre class="r"><code>## Load the starwars package
+humans &lt;- dplyr::starwars %&gt;% 
+  filter(species == &quot;Human&quot;)
+
+humans %&gt;% 
+  slice_head(n = 6)</code></pre>
+<pre><code># A tibble: 6 × 14
+  name         height  mass hair_…¹ skin_…² eye_c…³ birth…⁴ sex   gender homew…⁵
+  &lt;chr&gt;         &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  
+1 Luke Skywal…    172    77 blond   fair    blue       19   male  mascu… Tatooi…
+2 Darth Vader     202   136 none    white   yellow     41.9 male  mascu… Tatooi…
+3 Leia Organa     150    49 brown   light   brown      19   fema… femin… Aldera…
+4 Owen Lars       178   120 brown,… light   blue       52   male  mascu… Tatooi…
+5 Beru Whites…    165    75 brown   light   blue       47   fema… femin… Tatooi…
+6 Biggs Darkl…    183    84 black   light   brown      24   male  mascu… Tatooi…
+# … with 4 more variables: species &lt;chr&gt;, films &lt;list&gt;, vehicles &lt;list&gt;,
+#   starships &lt;list&gt;, and abbreviated variable names ¹​hair_color, ²​skin_color,
+#   ³​eye_color, ⁴​birth_year, ⁵​homeworld</code></pre>
+<pre class="r"><code>t_01 &lt;- humans %&gt;% 
+  tabyl(eye_color)
+
+t_01 %&gt;%    # convert as tibble for better visualiztion
+  as_tibble()</code></pre>
+<pre><code># A tibble: 6 × 3
+  eye_color     n percent
+  &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;
+1 blue         12  0.343 
+2 blue-gray     1  0.0286
+3 brown        17  0.486 
+4 dark          1  0.0286
+5 hazel         2  0.0571
+6 yellow        2  0.0571</code></pre>
+<p>This is similar to doing a count in dplyr, with the added percentage
+column in decimals.</p>
+<p>If there were NA values, <code>tabyl()</code> will show “valid”
+percentages columns since it will remove the NAs.</p>
+<pre class="r"><code>x &lt;- c(&quot;big&quot;, &quot;big&quot;, &quot;small&quot;, &quot;small&quot;, &quot;small&quot;, NA)
+tabyl(x) %&gt;% 
+  as_tibble()</code></pre>
+<pre><code># A tibble: 3 × 4
+  x         n percent valid_percent
+  &lt;chr&gt; &lt;int&gt;   &lt;dbl&gt;         &lt;dbl&gt;
+1 big       2   0.333           0.4
+2 small     3   0.5             0.6
+3 &lt;NA&gt;      1   0.167          NA  </code></pre>
+<p>In the previous example, the input was a vector. As the result is a
+tabyl object then it is easy to convert it into workable tidy
+formats.</p>
+<p>The <code>adorn_()</code> helper functions may be more suitable for
+2-column inputs; however, they offer more visual info when used in cases
+like the ones above.</p>
+<p>One these functions is <code>adorn_pct_formatting()</code> which adds
+the % symbol and roudning to decimal percent columns.
+<code>adorn_totals()</code> adds a total row if included as
+argument.</p>
+<pre class="r"><code>t_01 %&gt;% 
+  adorn_totals(&quot;row&quot;) %&gt;% 
+  adorn_pct_formatting() %&gt;% 
+  as_tibble()</code></pre>
+<pre><code># A tibble: 7 × 3
+  eye_color     n percent
+  &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;  
+1 blue         12 34.3%  
+2 blue-gray     1 2.9%   
+3 brown        17 48.6%  
+4 dark          1 2.9%   
+5 hazel         2 5.7%   
+6 yellow        2 5.7%   
+7 Total        35 100.0% </code></pre>
+</div>
+<div id="two-way-tabyl" class="section level2">
+<h2>Two-way tabyl</h2>
+<p>Frequency tables that include two-column inputs are called crosstab
+or contingency tables. Their result is the combination of a dplyr count
+and pivot wider.</p>
+<pre class="r"><code>## Let&#39;s create a contingency table of male/femail starwars characters based on eye color
+t_02 &lt;- humans %&gt;% 
+  tabyl(gender,
+        eye_color) %&gt;% 
+  as_tibble()
+
+t_02</code></pre>
+<pre><code># A tibble: 2 × 7
+  gender     blue `blue-gray` brown  dark hazel yellow
+  &lt;chr&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1 feminine      3           0     5     0     1      0
+2 masculine     9           1    12     1     1      2</code></pre>
+<p>Now let’s the percentages by row (contingency tabyls do not output
+percentages). Also we will add the corresponding formatting.</p>
+<pre class="r"><code>t_02 %&gt;% 
+  adorn_percentages(&quot;row&quot;) %&gt;% 
+  adorn_pct_formatting(digits = 2) %&gt;% 
+  adorn_ns(position = &quot;front&quot;) %&gt;%  # Adds the numbers next to the percentages in parenthesis.  Default position is &quot;rear&quot;
+  as_tibble()</code></pre>
+<pre><code># A tibble: 2 × 7
+  gender    blue       `blue-gray` brown         dark      hazel      yellow   
+  &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;    
+1 feminine  3 (33.33%) 0 (0.00%)   &quot; 5 (55.56%)&quot; 0 (0.00%) 1 (11.11%) 0 (0.00%)
+2 masculine 9 (34.62%) 1 (3.85%)   &quot;12 (46.15%)&quot; 1 (3.85%) 1  (3.85%) 2 (7.69%)</code></pre>
+</div>
+<div id="three-way-tabyls" class="section level2">
+<h2>Three-way tabyls</h2>
+<p>When adding three input columns, <code>tabyl()</code> will produce a
+list of tabyls.</p>
+<p>In this example we will have the gender show the corresponding
+distribution within eye_color, and skin_color in the starwars
+dataset.</p>
+<pre class="r"><code>t_03 &lt;- humans %&gt;% 
+  tabyl(eye_color,
+        skin_color,
+        gender)
+
+t_03</code></pre>
+<pre><code>$feminine
+ eye_color dark fair light pale tan white
+      blue    0    2     1    0   0     0
+ blue-gray    0    0     0    0   0     0
+     brown    0    1     4    0   0     0
+      dark    0    0     0    0   0     0
+     hazel    0    0     1    0   0     0
+    yellow    0    0     0    0   0     0
+
+$masculine
+ eye_color dark fair light pale tan white
+      blue    0    7     2    0   0     0
+ blue-gray    0    1     0    0   0     0
+     brown    3    4     3    0   2     0
+      dark    1    0     0    0   0     0
+     hazel    0    1     0    0   0     0
+    yellow    0    0     0    1   0     1</code></pre>
+<p>If we want to add <code>adorn_()</code> functions to a list of tabyls
+(or data frames), the <code>tabyl()</code> package will call
+<code>purrr_map()</code> silently to apply it to each individual element
+of the list.</p>
+<pre class="r"><code>## Adding adorn_() function to include total rows, percentages, etc.
+humans %&gt;% 
+  tabyl(eye_color, skin_color, gender, show_missing_levels = FALSE) %&gt;% 
+  adorn_totals(&quot;row&quot;) %&gt;% 
+  adorn_percentages(&quot;all&quot;) %&gt;% 
+  adorn_pct_formatting(digits = 1) %&gt;% 
+  adorn_ns(position = &quot;front&quot;) %&gt;% 
+  adorn_title()</code></pre>
+<pre><code>$feminine
+           skin_color          
+ eye_color       fair     light
+      blue  2 (22.2%) 1 (11.1%)
+     brown  1 (11.1%) 4 (44.4%)
+     hazel  0  (0.0%) 1 (11.1%)
+     Total  3 (33.3%) 6 (66.7%)
+
+$masculine
+           skin_color                                                
+ eye_color       dark       fair     light     pale      tan    white
+      blue  0  (0.0%)  7 (26.9%) 2  (7.7%) 0 (0.0%) 0 (0.0%) 0 (0.0%)
+ blue-gray  0  (0.0%)  1  (3.8%) 0  (0.0%) 0 (0.0%) 0 (0.0%) 0 (0.0%)
+     brown  3 (11.5%)  4 (15.4%) 3 (11.5%) 0 (0.0%) 2 (7.7%) 0 (0.0%)
+      dark  1  (3.8%)  0  (0.0%) 0  (0.0%) 0 (0.0%) 0 (0.0%) 0 (0.0%)
+     hazel  0  (0.0%)  1  (3.8%) 0  (0.0%) 0 (0.0%) 0 (0.0%) 0 (0.0%)
+    yellow  0  (0.0%)  0  (0.0%) 0  (0.0%) 1 (3.8%) 0 (0.0%) 1 (3.8%)
+     Total  4 (15.4%) 13 (50.0%) 5 (19.2%) 1 (3.8%) 2 (7.7%) 1 (3.8%)</code></pre>
+</div>
+<div id="more-on-the-adorn_-functionalities" class="section level2">
+<h2>More on the <code>adorn_()</code> functionalities</h2>
+<p><code>adorn_()</code> will approximate Pivot Table functionalities of
+Excel on data frames. Also, they print elegrant results for interactive
+analysis or for report sharing.</p>
+<pre class="r"><code>humans %&gt;% 
+  tabyl(gender, eye_color) %&gt;% 
+  adorn_totals(c(&quot;row&quot;, &quot;col&quot;)) %&gt;% 
+  adorn_percentages(&quot;row&quot;) %&gt;% 
+  adorn_pct_formatting(rounding = &quot;half up&quot;, digits = 0) %&gt;% 
+  adorn_ns(position = &quot;front&quot;) %&gt;% 
+  adorn_title(&quot;combined&quot;) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+gender/eye_color
+</th>
+<th style="text-align:left;">
+blue
+</th>
+<th style="text-align:left;">
+blue-gray
+</th>
+<th style="text-align:left;">
+brown
+</th>
+<th style="text-align:left;">
+dark
+</th>
+<th style="text-align:left;">
+hazel
+</th>
+<th style="text-align:left;">
+yellow
+</th>
+<th style="text-align:left;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+feminine
+</td>
+<td style="text-align:left;">
+3 (33%)
+</td>
+<td style="text-align:left;">
+0 (0%)
+</td>
+<td style="text-align:left;">
+5 (56%)
+</td>
+<td style="text-align:left;">
+0 (0%)
+</td>
+<td style="text-align:left;">
+1 (11%)
+</td>
+<td style="text-align:left;">
+0 (0%)
+</td>
+<td style="text-align:left;">
+9 (100%)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+masculine
+</td>
+<td style="text-align:left;">
+9 (35%)
+</td>
+<td style="text-align:left;">
+1 (4%)
+</td>
+<td style="text-align:left;">
+12 (46%)
+</td>
+<td style="text-align:left;">
+1 (4%)
+</td>
+<td style="text-align:left;">
+1 (4%)
+</td>
+<td style="text-align:left;">
+2 (8%)
+</td>
+<td style="text-align:left;">
+26 (100%)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:left;">
+12 (34%)
+</td>
+<td style="text-align:left;">
+1 (3%)
+</td>
+<td style="text-align:left;">
+17 (49%)
+</td>
+<td style="text-align:left;">
+1 (3%)
+</td>
+<td style="text-align:left;">
+2 (6%)
+</td>
+<td style="text-align:left;">
+2 (6%)
+</td>
+<td style="text-align:left;">
+35 (100%)
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>adorn_()</code> functions are…</p>
+<ol style="list-style-type: lower-alpha">
+<li><code>adorn_totals()</code>: Adds totals to row, column or both</li>
+<li><code>adorn_percentaage()</code>: Calculates percentages on either
+rows or columns</li>
+<li><code>adorn_pct_formatting()</code> Format percentage columns,
+controlling number of digits, and appends the % symbol</li>
+<li><code>adorn_rounding()</code>: Round numbers, recommended use of the
+half_up argument when the decimals land on a .5 (ties situation). This
+function should not be used together with
+<code>adorn_pct_formatting()</code>.</li>
+<li><code>adorn_ns()</code>: Adds the numbers the percentages represent
+coming for the underlying counts in the tabyl. Interesting to see how
+they can be applied by the user.</li>
+<li><code>adorn_title()</code>: Add a title to a tabyl, or a title to a
+new row on top of the dataframe or a combination of row and column
+title.</li>
+</ol>
+<p>These functions should be applied in this order.</p>
+</div>
+<div id="adorn_-functions-with-other-types-of-data-frames"
+class="section level2">
+<h2><code>adorn_()</code> functions with other types of data frames</h2>
+<p><code>adorn_()</code> functions work with other data frames, not only
+the results when using <code>tabyl()</code>.</p>
+<p>For example, using the mtcars dataset, we can create a column of
+totals and get the percentages from them.</p>
+<pre class="r"><code>mtcars %&gt;% 
+  rownames_to_column(var = &quot;cars&quot;) %&gt;% 
+  as_tibble() %&gt;% 
+  adorn_totals(&quot;col&quot;) %&gt;% 
+  adorn_percentages(&quot;col&quot;) %&gt;% 
+  adorn_rounding(digits = 2) %&gt;% 
+  slice_head(n = 6)</code></pre>
+<pre><code>              cars  mpg  cyl disp   hp drat   wt qsec   vs   am gear carb Total
+         Mazda RX4 0.03 0.03 0.02 0.02 0.03 0.03 0.03 0.00 0.08 0.03 0.04  0.02
+     Mazda RX4 Wag 0.03 0.03 0.02 0.02 0.03 0.03 0.03 0.00 0.08 0.03 0.04  0.02
+        Datsun 710 0.04 0.02 0.01 0.02 0.03 0.02 0.03 0.07 0.08 0.03 0.01  0.02
+    Hornet 4 Drive 0.03 0.03 0.03 0.02 0.03 0.03 0.03 0.07 0.00 0.03 0.01  0.03
+ Hornet Sportabout 0.03 0.04 0.05 0.04 0.03 0.03 0.03 0.00 0.00 0.03 0.02  0.04
+           Valiant 0.03 0.03 0.03 0.02 0.02 0.03 0.04 0.07 0.00 0.03 0.01  0.03</code></pre>
+<pre class="r"><code>percent_above_165_cm &lt;- humans %&gt;%
+  group_by(gender) %&gt;%
+  summarise(pct_above_165_cm = mean(height &gt; 165, na.rm = TRUE), .groups = &quot;drop&quot;)
+
+percent_above_165_cm %&gt;%
+  adorn_pct_formatting() </code></pre>
+<pre><code># A tibble: 2 × 2
+  gender    pct_above_165_cm
+  &lt;chr&gt;     &lt;chr&gt;           
+1 feminine  12.5%           
+2 masculine 100.0%          </code></pre>
+<pre class="r"><code>## As a follow up, it would be good to see how to add Ns (numbers) to the results below.  </code></pre>
 </div>
 <div id="back-to-home" class="section level2">
 <h2>Back to Home</h2>
